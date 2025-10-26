@@ -43,7 +43,7 @@ import me.ghui.v2er.module.drawer.care.SpecialCareActivity;
 import me.ghui.v2er.module.drawer.dailyhot.DailyHotActivity;
 import me.ghui.v2er.module.drawer.star.StarActivity;
 import me.ghui.v2er.module.login.LoginActivity;
-import me.ghui.v2er.module.settings.UserManualActivity;
+import me.ghui.v2er.module.node.NodeTopicActivity;
 import me.ghui.v2er.module.user.UserHomeActivity;
 import me.ghui.v2er.network.bean.UserInfo;
 import me.ghui.v2er.util.DarkModelUtils;
@@ -61,9 +61,7 @@ import me.ghui.v2er.widget.FollowProgressBtn;
 import me.ghui.v2er.widget.dialog.ConfirmDialog;
 import me.ghui.v2er.widget.listener.AppBarStateChangeListener;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener,
-        UpdateUnReadMsgDelegate, CheckInContract.IView, OnTabSelectListener,
-        HomeFilterMenu.OnMenuItemClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, UpdateUnReadMsgDelegate, CheckInContract.IView, OnTabSelectListener, HomeFilterMenu.OnMenuItemClickListener {
 
     private static final String TAB_INDEX = KEY("tab_index");
     private static final String PAGE_ONE_DATA = KEY("page_one_data");
@@ -131,7 +129,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mToolbar.getNavigationIcon().setTint(Theme.getColor(R.attr.icon_tint_color, this));
         mToolbar.inflateMenu(R.menu.main_toolbar_menu);//设置右上角的填充菜单
         mToolbar.setNavigationOnClickListener(v -> {
-            if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+            if(mDrawerLayout.isDrawerOpen(Gravity.START)) {
                 mDrawerLayout.closeDrawer(Gravity.START);
             } else {
                 mDrawerLayout.openDrawer(Gravity.START);
@@ -141,7 +139,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         // Initialize toolbar badge support for hamburger icon
         setupNavigationIconBadge();
         mToolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.action_search) {
+            if(item.getItemId() == R.id.action_search) {
                 pushFragment(SearchFragment.newInstance());
             }
             return true;
@@ -178,15 +176,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public boolean onToolbarDoubleTaped() {
         View rootView = getCurrentFragment().getView();
-        if (rootView == null) return false;
+        if(rootView == null)
+            return false;
         RecyclerView recyclerView = rootView.findViewById(R.id.base_recyclerview);
-        if (recyclerView != null) {
+        if(recyclerView != null) {
             recyclerView.scrollToPosition(0);
             return true;
         }
         return false;
     }
-
 
     private void refreshDayNightItem() {
         mNightMenuItem.setTitle(DarkModelUtils.isAutoModeEnabled() ? "深色模式(自动)" : "深色模式");
@@ -216,17 +214,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mNightMenuItem = mNavigationView.getMenu().findItem(R.id.day_night_item);
 
         mAvatarImg.setOnLongClickListener(v -> {
-            new ConfirmDialog.Builder(getActivity())
-                    .title("退出登录")
-                    .msg("确定退出吗？")
-                    .positiveText(R.string.ok, dialog -> {
-                        UserUtils.clearLogin();
-                        Navigator.from(getActivity())
-                                .setFlag(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                .to(MainActivity.class).start();
-                    })
-                    .negativeText(R.string.cancel)
-                    .build().show();
+            new ConfirmDialog.Builder(getActivity()).title("退出登录").msg("确定退出吗？").positiveText(R.string.ok, dialog -> {
+                UserUtils.clearLogin();
+                Navigator.from(getActivity()).setFlag(Intent.FLAG_ACTIVITY_CLEAR_TOP).to(MainActivity.class).start();
+            }).negativeText(R.string.cancel).build().show();
             return false;
         });
 
@@ -246,11 +237,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 case R.id.setting_nav_item:
                     Navigator.from(getContext()).to(Page.SETTING).start();
                     break;
-                case R.id.faq_nav_item:
-                    startActivity(new Intent(getContext(), UserManualActivity.class));
+                case R.id.all4all_nav_item:
+                    NodeTopicActivity.openById("all4all", 1, getContext(), null, null);
+                    break;
+                case R.id.jobs_nav_item:
+                    NodeTopicActivity.openById("jobs", 1, getContext(), null, null);
                     break;
                 case R.id.create_nav_item:
-                    if (UserUtils.notLoginAndProcessToLogin(false, getContext())) return true;
+                    if(UserUtils.notLoginAndProcessToLogin(false, getContext()))
+                        return true;
                     Navigator.from(getContext()).to(CreateTopicActivity.class).start();
                     break;
                 case R.id.vshare_nav_item:
@@ -265,8 +260,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             delay(50, () -> mDrawerLayout.closeDrawer(Gravity.START, false));
             return true;
         });
-
-
 
         Menu menu = mNavigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
@@ -338,16 +331,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     private void onNightMenuItemClicked(boolean isNightMode) {
         int wanttedMode = isNightMode ? DarkModelUtils.DEFAULT_MODE : DarkModelUtils.DARK_MODE;
-        if (DarkModelUtils.isAutoModeEnabled()) {
-            new ConfirmDialog.Builder(MainActivity.this)
-                    .title("要关闭自动切换模式吗？")
-                    .msg("当前为自动切换模式，确定关闭自动切换吗")
-                    .positiveText("关闭", dialog -> {
-                        DarkModelUtils.saveEnableAutoSwitch(false);
-                        DarkModelUtils.saveModeMannually(wanttedMode);
-                        reloadMode(wanttedMode);
-                    }).negativeText("暂时不用")
-                    .build().show();
+        if(DarkModelUtils.isAutoModeEnabled()) {
+            new ConfirmDialog.Builder(MainActivity.this).title("要关闭自动切换模式吗？").msg("当前为自动切换模式，确定关闭自动切换吗").positiveText("关闭", dialog -> {
+                DarkModelUtils.saveEnableAutoSwitch(false);
+                DarkModelUtils.saveModeMannually(wanttedMode);
+                reloadMode(wanttedMode);
+            }).negativeText("暂时不用").build().show();
         } else {
             mNightSwitch.toggle();
             DarkModelUtils.saveModeMannually(wanttedMode);
@@ -480,13 +469,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     private void updateDrawLayout() {
         UserInfo userInfo = UserUtils.getUserInfo();
-        if (userInfo != null) {
+        if(userInfo != null) {
             mUserNameTv.setText(userInfo.getUserName());
-            GlideApp.with(getContext())
-                    .load(userInfo.getAvatar())
-                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .placeholder(R.drawable.avatar_placeholder_drawable)
-                    .into(mAvatarImg);
+            GlideApp.with(getContext()).load(userInfo.getAvatar()).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).placeholder(R.drawable.avatar_placeholder_drawable).into(mAvatarImg);
         } else {
             mUserNameTv.setText("请先登录");
             mAvatarImg.setImageResource(R.drawable.default_avatar_drawable);
@@ -499,7 +484,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         switch (v.getId()) {
             case R.id.avatar_img:
             case R.id.user_name_tv:
-                if (UserUtils.isLogin()) {
+                if(UserUtils.isLogin()) {
                     UserHomeActivity.open(UserUtils.getUserInfo().getUserName(), this, null, UserUtils.getUserInfo().getAvatar());
                 } else {
                     Navigator.from(this).to(LoginActivity.class).start();
@@ -507,13 +492,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 mDrawerLayout.closeDrawers();
                 break;
             case R.id.check_in_progress_btn:
-                if (!UserUtils.isLogin()) {
+                if(!UserUtils.isLogin()) {
                     toast("请先登录!");
                     return;
                 }
-                if (mCheckInBtn.isNormal()) {
+                if(mCheckInBtn.isNormal()) {
                     mCheckInPresenter.checkIn(true);
-                } else if (mCheckInBtn.isFinished()) {
+                } else if(mCheckInBtn.isFinished()) {
                     toast("已连续签到" + mCheckInPresenter.checkInDays() + "天");
                 } else {
                     toast("正在签到请稍后...");
@@ -529,22 +514,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @SuppressLint("WrongConstant")
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
+        if(mDrawerLayout.isDrawerOpen(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
             return;
         }
 
-        if (!isBackableEmpty()) {
+        if(!isBackableEmpty()) {
             super.onBackPressed();
             return;
         }
 
-        if (getCurrentTab() != 0) {
+        if(getCurrentTab() != 0) {
             mSlidingTabLayout.setCurrentTab(0);
             return;
         }
 
-        if (mFilterMenu != null && mFilterMenu.isShowing()) {
+        if(mFilterMenu != null && mFilterMenu.isShowing()) {
             mFilterMenu.hide();
             return;
         }
@@ -553,7 +538,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void updateUnReadMsg(int position, int count) {
-        if (count <= 0) {//hide
+        if(count <= 0) {//hide
             mSlidingTabLayout.hideMsg(position);
         } else {
             mSlidingTabLayout.showMsg(position, count);
@@ -604,11 +589,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onTabSelect(int position) {
         L.d("onTabSelect");
-        if (position == 0) {
+        if(position == 0) {
             mTab1View.getCompoundDrawables()[2].setTint(Theme.getColor(R.attr.tablayout_selected_color, this));
         } else {
             mTab1View.getCompoundDrawables()[2].setTint(Theme.getColor(R.attr.tablayout_unselected_color, this));
-            if (mFilterMenu != null && mFilterMenu.isShowing()) {
+            if(mFilterMenu != null && mFilterMenu.isShowing()) {
                 mFilterMenu.hide();
             }
         }
@@ -617,8 +602,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onTabReselect(int position) {
         L.d("onTabReSelect");
-        if (position == 0) {
-            if (mFilterMenu == null) {
+        if(position == 0) {
+            if(mFilterMenu == null) {
                 mFilterMenu = new HomeFilterMenu(mTabMenuContainer, mTab1View);
                 mFilterMenu.setOnItemClickListner(this);
             }
@@ -636,7 +621,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     public void onTextSizeChanged(TextSizeChangeEvent event) {
         recreate();
     }
-
 
     public interface ChangeTabTypeDelegate {
         void changeTabType(TabInfo tabInfo);

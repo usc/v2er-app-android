@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/main_menu">
         <item
-            android:id="@+id/hot_nav_item"
-            android:icon="@drawable/hot_nav_item"
-            android:title="@string/daily_hot" />
+                android:id="@+id/hot_nav_item"
+                android:icon="@drawable/hot_nav_item"
+                android:title="@string/daily_hot" />
         <item
-            android:id="@+id/care_nav_item"
-            android:icon="@drawable/follow_nav_item"
-            android:title="特别关注" />
+                android:id="@+id/care_nav_item"
+                android:icon="@drawable/follow_nav_item"
+                android:title="特别关注" />
         <item
-            android:id="@+id/star_nav_item"
-            android:icon="@drawable/star_nav_item"
-            android:title="收藏" />
+                android:id="@+id/star_nav_item"
+                android:icon="@drawable/star_nav_item"
+                android:title="收藏" />
     </group>
     <group
-        android:id="@+id/secondary"
-        android:menuCategory="secondary">
+            android:id="@+id/secondary"
+            android:menuCategory="secondary">
         <item
-            android:id="@+id/create_nav_item"
-            android:icon="@drawable/create_nav_item"
-            android:title="@string/new_post" />
+                android:id="@+id/all4all_nav_item"
+                android:icon="@drawable/ic_node"
+                android:title="二手交易" />
         <item
-            android:id="@+id/faq_nav_item"
-            android:icon="@drawable/faq_nav_item"
-            android:title="FAQ" />
+                android:id="@+id/jobs_nav_item"
+                android:icon="@drawable/ic_node"
+                android:title="酷工作" />
+        <item
+                android:id="@+id/create_nav_item"
+                android:icon="@drawable/create_nav_item"
+                android:title="@string/new_post" />
         <item
             android:id="@+id/vshare_nav_item"
             android:icon="@drawable/vshare_nav_item"
@@ -33,17 +37,17 @@
             app:actionLayout="@layout/layout_vshare_badge" />
     </group>
     <group
-        android:id="@+id/day_night_menu"
-        android:menuCategory="secondary">
+            android:id="@+id/day_night_menu"
+            android:menuCategory="secondary">
         <item
-            android:id="@+id/setting_nav_item"
-            android:icon="@drawable/setting_nav_item"
-            android:title="设置" />
+                android:id="@+id/setting_nav_item"
+                android:icon="@drawable/setting_nav_item"
+                android:title="设置" />
         <item
-            android:id="@+id/day_night_item"
-            android:checkable="true"
-            android:icon="@drawable/night_nav_item"
-            android:title="@string/night_mode"
-            app:actionLayout="@layout/layout_switch" />
+                android:id="@+id/day_night_item"
+                android:checkable="true"
+                android:icon="@drawable/night_nav_item"
+                android:title="@string/night_mode"
+                app:actionLayout="@layout/layout_switch" />
     </group>
 </menu>
