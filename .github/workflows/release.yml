@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'config.gradle'
   workflow_dispatch:
     inputs:
       version:
