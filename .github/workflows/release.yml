@@ -73,7 +73,7 @@ jobs:
         
         # Get previous version - handle first commit case
         if git rev-parse HEAD~1 >/dev/null 2>&1; then
-          git show HEAD~1:config.gradle > prev_config.gradle 2>/dev/null || echo "No previous config.gradle"
+          git show HEAD~20:config.gradle > prev_config.gradle 2>/dev/null || echo "No previous config.gradle"
           if [ -f prev_config.gradle ]; then
             PREV_VERSION=$(grep versionName prev_config.gradle | sed -E 's/.*versionName:\s*"([^"]+)".*/\1/' || echo "")
             PREV_CODE=$(grep versionCode prev_config.gradle | sed -E 's/.*versionCode:\s*([0-9]+).*/\1/' || echo "0")
