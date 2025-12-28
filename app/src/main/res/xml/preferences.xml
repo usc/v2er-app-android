@@ -6,6 +6,15 @@
     android:title="设置">
     <PreferenceCategory
         android:layout="@layout/preference_category_widget"
+        android:title="帮助">
+        <Preference
+            android:key="@string/pref_key_v2er_app"
+            android:layout="@layout/preference_item"
+            android:summary="唯一问题反馈渠道: https://v2er.app/help"
+            android:title="问题反馈" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
         android:title="常规设置">
         <Preference
             android:key="@string/pref_key_clear_cache"
@@ -36,11 +45,31 @@
             android:layout="@layout/preference_item"
             android:summary="优先浏览帖子最新回复"
             android:title="逆序浏览" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/pref_key_use_builtin_browser"
+            android:layout="@layout/preference_item"
+            android:summary="开启后站外链接将在内置浏览器中打开"
+            android:title="内置浏览器" />
         <Preference
             android:key="@string/pref_key_auto_dark_mode_settings"
             android:layout="@layout/preference_item"
             android:summary="设置自动切换(跟随系统/指定切换时间)"
             android:title="深色模式" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="图床设置">
+        <Preference
+            android:key="@string/pref_key_imgur_client_id"
+            android:layout="@layout/preference_item"
+            android:summary="@string/imgur_client_id_summary_default"
+            android:title="Imgur Client ID" />
+        <Preference
+            android:key="@string/pref_key_my_uploads"
+            android:layout="@layout/preference_item"
+            android:summary="@string/my_uploads_summary"
+            android:title="@string/my_uploads" />
     </PreferenceCategory>
     <PreferenceCategory
         android:layout="@layout/preference_category_widget"
@@ -99,11 +128,6 @@
         android:layout="@layout/preference_category_widget"
         android:title="其它">
         <Preference
-            android:key="@string/pref_key_v2er_app"
-            android:layout="@layout/preference_item"
-            android:summary="https://v2er.app"
-            android:title="v2er.app" />
-        <Preference
             android:key="@string/pref_key_contact_me_twitter"
             android:layout="@layout/preference_item"
             android:summary="\@gray_create"
@@ -113,6 +137,11 @@
             android:layout="@layout/preference_item"
             android:summary="\v2er_app"
             android:title="Telegram Group" />
+        <Preference
+            android:key="@string/pref_key_app_version"
+            android:layout="@layout/preference_item"
+            android:selectable="false"
+            android:title="版本" />
     </PreferenceCategory>
     <Preference
         android:key="@string/pref_key_value_toggle_log"
