@@ -65,18 +65,10 @@ public class TopicReplySortHeaderDelegate extends ItemViewDelegate<TopicInfo.Ite
     }
 
     private void updateSortButtonState(TextView button, boolean isSelected) {
-        if (isSelected) {
-            button.setBackgroundResource(R.drawable.sort_toggle_item_bg_selected);
-            button.setTextColor(ContextCompat.getColor(mContext, android.R.color.white));
-            // Tint the drawable to white
-            tintCompoundDrawables(button, android.R.color.white);
-        } else {
-            button.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-            int hintColor = Theme.getColor(R.attr.hintTextColor, mContext);
-            button.setTextColor(hintColor);
-            // Tint the drawable to hint color
-            tintCompoundDrawablesWithColor(button, hintColor);
-        }
+        int hintColor = Theme.getColor(R.attr.hintTextColor, mContext);
+        button.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        button.setTextColor(hintColor);
+        tintCompoundDrawablesWithColor(button, hintColor);
     }
 
     private void tintCompoundDrawables(TextView textView, int colorResId) {

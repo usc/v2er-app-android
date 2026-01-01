@@ -32,7 +32,7 @@
             android:id="@+id/sort_by_time_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/sort_toggle_item_bg_selected"
+            android:background="@android:color/transparent"
             android:drawableStart="@drawable/ic_sort_time"
             android:drawablePadding="3dp"
             android:paddingLeft="10dp"
@@ -40,7 +40,7 @@
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
             android:text="@string/sort_by_time"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/hintTextColor"
             android:textSize="12sp"
             tools:text="时间" />
 
