@@ -43,7 +43,7 @@ jobs:
       
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 2  # Need history for version comparison
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -201,7 +201,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       
     - name: Set up JDK 17
       uses: actions/setup-java@v5
@@ -248,7 +248,7 @@ jobs:
         rm -f app/keystore.jks
         
     - name: Upload release APK
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: release-apk
         path: app/build/outputs/apk/**/*.apk
@@ -277,7 +277,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       
     - name: Set up JDK 17
       uses: actions/setup-java@v5
@@ -324,7 +324,7 @@ jobs:
         
     - name: Upload release bundle
       if: ${{ vars.ENABLE_SIGNING == 'true' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: release-bundle
         path: |
@@ -340,17 +340,17 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       
     - name: Download APK artifact
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v7
       with:
         name: release-apk
         path: release-artifacts/
         
     - name: Download AAB artifact
       if: ${{ vars.ENABLE_SIGNING == 'true' }}
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v7
       with:
         name: release-bundle
         path: release-artifacts/
@@ -476,10 +476,10 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       
     - name: Download AAB artifact
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v7
       with:
         name: release-bundle
         path: release-artifacts/
@@ -666,10 +666,10 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: '3.x'
         
