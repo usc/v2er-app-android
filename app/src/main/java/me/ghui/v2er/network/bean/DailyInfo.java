@@ -59,10 +59,20 @@ public class DailyInfo extends BaseInfo {
     }
 
     public String once() {
-        String result = UriUtils.getParamValue(checkinUrl, "once");
-        if (Check.notEmpty(result)) {
-            result = result.replace("';", "");
+        if (Check.isEmpty(checkinUrl)) return null;
+
+        // Extract URL from JavaScript string like: "location.href = '/mission/daily/redeem?once=84830';"
+        // First, extract the URL part between quotes
+        String url = checkinUrl;
+        int startQuote = url.indexOf("'");
+        int endQuote = url.lastIndexOf("'");
+
+        if (startQuote != -1 && endQuote != -1 && startQuote < endQuote) {
+            url = url.substring(startQuote + 1, endQuote);
         }
+
+        // Now parse the once parameter from the extracted URL
+        String result = UriUtils.getParamValue(url, "once");
         return result;
     }
 
