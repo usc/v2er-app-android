@@ -9,7 +9,6 @@ import me.ghui.v2er.network.APIService;
 import me.ghui.v2er.network.GeneralConsumer;
 import me.ghui.v2er.network.bean.DailyInfo;
 import me.ghui.v2er.util.Check;
-import me.ghui.v2er.util.Loge;
 import me.ghui.v2er.util.UserUtils;
 import me.ghui.v2er.util.Utils;
 
@@ -21,7 +20,6 @@ import static me.ghui.v2er.widget.FollowProgressBtn.NORMAL;
  */
 
 public class CheckInPresenter implements CheckInContract.IPresenter {
-    private static final String TAG = "CheckInPresenter";
     private static final int MAX_RETRY_COUNT = 3;
     private static final long INITIAL_DELAY_MS = 500;
 
@@ -55,7 +53,6 @@ public class CheckInPresenter implements CheckInContract.IPresenter {
                             if (needAutoCheckIn) {
                                 String once = checkInInfo.once();
                                 if (Check.isEmpty(once)) {
-                                    Loge.e(TAG, "Failed to extract once token from: " + checkInInfo.toString());
                                     mView.toast("签到失败: 无法获取签到令牌");
                                     mView.checkInBtn().setStatus(NORMAL, "签到", R.drawable.progress_button_checkin_icon);
                                 } else {
@@ -71,7 +68,6 @@ public class CheckInPresenter implements CheckInContract.IPresenter {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        Loge.e(TAG, "Failed to get daily info", e);
                         mView.checkInBtn().setStatus(NORMAL, "签到", R.drawable.progress_button_checkin_icon);
                     }
                 });
@@ -87,7 +83,6 @@ public class CheckInPresenter implements CheckInContract.IPresenter {
         Observable.timer(delayMs, TimeUnit.MILLISECONDS)
                 .compose(mView.rx(null))
                 .subscribe(ignored -> checkIn(once), e -> {
-                    Loge.e(TAG, "Delay error", e);
                     checkIn(once);
                 });
     }
@@ -110,10 +105,8 @@ public class CheckInPresenter implements CheckInContract.IPresenter {
                             if (retryCount < MAX_RETRY_COUNT) {
                                 retryCount++;
                                 long delay = INITIAL_DELAY_MS * (1L << retryCount); // 1s, 2s, 4s
-                                Loge.w(TAG, "Check-in not confirmed, retry " + retryCount + "/" + MAX_RETRY_COUNT + " in " + delay + "ms");
                                 checkInWithDelay(once, delay);
                             } else {
-                                Loge.e(TAG, "Check-in failed after " + MAX_RETRY_COUNT + " retries");
                                 mView.toast("签到失败，请手动签到");
                                 mView.checkInBtn().setStatus(NORMAL, "签到", R.drawable.progress_button_checkin_icon);
                             }
@@ -123,11 +116,9 @@ public class CheckInPresenter implements CheckInContract.IPresenter {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        Loge.e(TAG, "Check-in request failed", e);
                         if (retryCount < MAX_RETRY_COUNT) {
                             retryCount++;
                             long delay = INITIAL_DELAY_MS * (1L << retryCount);
-                            Loge.w(TAG, "Retrying check-in " + retryCount + "/" + MAX_RETRY_COUNT + " in " + delay + "ms");
                             checkInWithDelay(once, delay);
                         } else {
                             mView.toast("签到失败，请手动签到");
