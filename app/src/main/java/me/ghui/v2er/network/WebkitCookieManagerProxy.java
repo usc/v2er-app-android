@@ -56,6 +56,10 @@ public class WebkitCookieManagerProxy extends CookieManager implements CookieJar
                 webkitCookieManager.setCookie(url, headerValue);
             }
         }
+
+        // setCookie() is asynchronous on modern Android. Flush to make cookies
+        // visible to subsequent requests in the same app session.
+        webkitCookieManager.flush();
     }
 
     @Override
